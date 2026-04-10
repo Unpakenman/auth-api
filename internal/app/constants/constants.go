@@ -27,3 +27,8 @@ const (
 const (
 	CachedTTLappointmentList = 300 * time.Second
 )
+
+const (
+	UserAlreadyExistsError = "user already exists"
+	EmployeeNotFoundError  = "employee not found"
+)

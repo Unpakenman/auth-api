@@ -10,10 +10,10 @@ import (
 )
 
 type authUseCase struct {
-	provider db.AuthProvider
-	logger   logger.LogClient
-	config   *config.Values
-	cache    providerCache.Cache
+	db     db.AuthProvider
+	logger logger.LogClient
+	config *config.Values
+	cache  providerCache.Cache
 }
 
 func NewUseCase(
@@ -23,10 +23,10 @@ func NewUseCase(
 	providerCache providerCache.Cache,
 ) UseCase {
 	return &authUseCase{
-		provider: provider,
-		logger:   logger,
-		config:   config,
-		cache:    providerCache,
+		db:     provider,
+		logger: logger,
+		config: config,
+		cache:  providerCache,
 	}
 }
 
