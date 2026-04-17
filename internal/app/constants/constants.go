@@ -31,4 +31,6 @@ const (
 const (
 	UserAlreadyExistsError = "user already exists"
 	EmployeeNotFoundError  = "employee not found"
+	UserNotFoundError      = "user not found"
+	PasswordsMismatch
 )

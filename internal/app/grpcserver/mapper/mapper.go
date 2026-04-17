@@ -10,6 +10,7 @@ type mapper struct{}
 
 type Mapper interface {
 	RegisterToUsecase(req *pb.RegisterRequest) auth_api.Register
+	LoginToUseCase(request *pb.LoginRequest) auth_api.LoginRequest
 	ResultErrorToProtoError(resultError localerrors.Error) error
 }
 
