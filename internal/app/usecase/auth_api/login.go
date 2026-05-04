@@ -27,26 +27,30 @@ func (u *authUseCase) Login(ctx context.Context, req LoginRequest,
 	if err != nil {
 		return nil, localerrors.NewBadRequestErr(err)
 	}
+
 	if user == nil {
 		return nil, localerrors.NewBadRequestErr(errors.New(constants.UserNotFoundError))
 	}
+
 	passwordsMatchError := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(req.Password))
 	if passwordsMatchError != nil {
 		return nil, localerrors.NewBadRequestErr(errors.New(constants.PasswordsMismatch))
 	}
+
 	token, err := GenerateAccessToken(user.Phone, user.IsEmployee)
 	if err != nil {
 		return nil, localerrors.NewInternalErr(err)
 	}
+
 	refreshToken, err := GenerateRefreshToken(user.Phone, user.IsEmployee)
 	if err != nil {
 		return nil, localerrors.NewInternalErr(err)
 	}
+
 	return &LoginResponse{
 		Token:        token,
 		RefreshToken: refreshToken,
 	}, nil
-
 }
 
 type User struct {
@@ -65,6 +69,7 @@ func (u *authUseCase) searchUser(ctx context.Context, phone string) (*User, erro
 	if err != nil {
 		return nil, err
 	}
+
 	return &User{
 		UserId:     user.UserID,
 		Phone:      user.Phone,
