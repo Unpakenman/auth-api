@@ -32,4 +32,5 @@ func NewUseCase(
 
 type UseCase interface {
 	Register(ctx context.Context, req Register) localerrors.Error
+	Login(ctx context.Context, req LoginRequest) (*LoginResponse, localerrors.Error)
 }
