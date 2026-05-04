@@ -45,11 +45,12 @@ func (u *authUseCase) Login(ctx context.Context, req LoginRequest,
 
 	cacheKey := "refresh_token:" + req.Phone
 	refreshToken, err := GenerateRefreshToken(user.Phone, user.IsEmployee)
-	_ = u.cache.Delete(ctx, cacheKey)
-	if err := u.cache.Set(ctx, cacheKey, []byte(refreshToken), time.Hour*2160); err != nil {
+	if err != nil {
 		return nil, localerrors.NewInternalErr(err)
 	}
-	if err != nil {
+
+	_ = u.cache.Delete(ctx, cacheKey)
+	if err := u.cache.Set(ctx, cacheKey, []byte(refreshToken), time.Hour*2160); err != nil {
 		return nil, localerrors.NewInternalErr(err)
 	}
 
