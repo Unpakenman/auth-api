@@ -34,3 +34,8 @@ const (
 	UserNotFoundError      = "user not found"
 	PasswordsMismatch
 )
+
+const (
+	PathToAccessSignature       = "JWT_SECRET_ACCESS_TOKEN"
+	PathToRefreshTokenSignature = "JWT_SECRET_REFRESH_TOKEN"
+)

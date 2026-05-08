@@ -11,6 +11,7 @@ type mapper struct{}
 type Mapper interface {
 	RegisterToUsecase(req *pb.RegisterRequest) auth_api.Register
 	LoginToUseCase(request *pb.LoginRequest) auth_api.LoginRequest
+	RefreshAccessTokenToUseCase(request *pb.RefreshAccessTokenRequest) auth_api.RefreshAccessTokenRequest
 	ResultErrorToProtoError(resultError localerrors.Error) error
 }
 
