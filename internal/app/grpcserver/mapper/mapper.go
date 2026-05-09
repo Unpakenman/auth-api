@@ -13,6 +13,7 @@ type Mapper interface {
 	LoginToUseCase(request *pb.LoginRequest) auth_api.LoginRequest
 	RefreshAccessTokenToUseCase(request *pb.RefreshAccessTokenRequest) auth_api.RefreshAccessTokenRequest
 	ResultErrorToProtoError(resultError localerrors.Error) error
+	LogoutToUseCase(request *pb.LogoutRequest) auth_api.LogoutRequest
 }
 
 func New() Mapper { return &mapper{} }

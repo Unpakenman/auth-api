@@ -25,6 +25,7 @@ func (u *authUseCase) RefreshAccessToken(ctx context.Context, req RefreshAccessT
 	signatureToken := constants.PathToAccessSignature
 	signatureRefreshToken := constants.PathToRefreshTokenSignature
 
+	//TODO добавить проверку refresh_token на существование в redis
 	accessClaims, err := parseToken(req.Token, signatureToken)
 	if err != nil {
 		switch {
@@ -61,9 +62,15 @@ func (u *authUseCase) RefreshAccessToken(ctx context.Context, req RefreshAccessT
 	}
 
 	cacheKey := "refresh_token" + accessClaims.Phone
+	_, err = u.cache.Get(ctx, cacheKey)
+	if err != nil {
+		return &RefreshAccessTokenResponse{}, localerrors.NewInternalErr(appErrors.TokenNotFound)
+	}
+
 	if err := u.cache.Delete(ctx, cacheKey); err != nil {
 		return nil, localerrors.NewInternalErr(err)
 	}
+
 	refreshToken, err := GenerateRefreshToken(refreshClaims.Phone, refreshClaims.IsEmployee)
 	if err != nil {
 		return nil, localerrors.NewInternalErr(err)
