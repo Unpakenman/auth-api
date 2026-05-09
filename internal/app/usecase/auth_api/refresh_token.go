@@ -25,7 +25,6 @@ func (u *authUseCase) RefreshAccessToken(ctx context.Context, req RefreshAccessT
 	signatureToken := constants.PathToAccessSignature
 	signatureRefreshToken := constants.PathToRefreshTokenSignature
 
-	//TODO добавить проверку refresh_token на существование в redis
 	accessClaims, err := parseToken(req.Token, signatureToken)
 	if err != nil {
 		switch {
