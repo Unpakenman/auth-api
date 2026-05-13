@@ -7,4 +7,5 @@ var (
 	InvalidSignature   = errors.New("invalid signature")
 	TokenExpired       = errors.New("token is expired")
 	InvalidToken       = errors.New("invalid token")
+	TokenNotFound      = errors.New("token not found")
 )

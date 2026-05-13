@@ -3,7 +3,7 @@ module auth-api
 go 1.25.1
 
 require (
-	github.com/Unpakenman/proto v0.0.11
+	github.com/Unpakenman/proto v0.0.12
 	github.com/XSAM/otelsql v0.42.0
 	github.com/gobuffalo/validate v2.0.4+incompatible
 	github.com/golang-jwt/jwt/v5 v5.3.1

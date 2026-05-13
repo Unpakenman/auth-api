@@ -34,4 +34,5 @@ type UseCase interface {
 	Register(ctx context.Context, req Register) localerrors.Error
 	Login(ctx context.Context, req LoginRequest) (*LoginResponse, localerrors.Error)
 	RefreshAccessToken(ctx context.Context, req RefreshAccessTokenRequest) (*RefreshAccessTokenResponse, localerrors.Error)
+	Logout(ctx context.Context, req LogoutRequest) localerrors.Error
 }

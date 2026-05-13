@@ -6,6 +6,8 @@ github.com/Masterminds/semver/v3 v3.1.1 h1:hLg3sBzpNErnxhQtUy/mmLR2I9foDujNK030I
 github.com/Masterminds/semver/v3 v3.1.1/go.mod h1:VPu/7SZ7ePZ3QOrcuXROw5FAcLl4a0cBrbBpGY/8hQs=
 github.com/Unpakenman/proto v0.0.11 h1:JUg8rGN/p3h+w40q+7QBd7u6O1cPNfeSnBJz35kOZGE=
 github.com/Unpakenman/proto v0.0.11/go.mod h1:le4mtwKnFat38FBFHTsjGOdoVfZ5S34sEUqLyR34Akw=
+github.com/Unpakenman/proto v0.0.12 h1:ApEXWDNccc34QeSuz34tSGFxTq/ge3T+DImxQlbXTiA=
+github.com/Unpakenman/proto v0.0.12/go.mod h1:le4mtwKnFat38FBFHTsjGOdoVfZ5S34sEUqLyR34Akw=
 github.com/XSAM/otelsql v0.42.0 h1:Li0xF4eJUxG2e0x3D4rvRlys1f27yJKvjTh7ljkUP5o=
 github.com/XSAM/otelsql v0.42.0/go.mod h1:4mOrEv+cS1KmKzrvTktvJnstr5GtKSAK+QHvFR9OcpI=
 github.com/bsm/ginkgo/v2 v2.12.0 h1:Ny8MWAHyOepLGlLKYmXG4IEkioBysk6GpaRTLC8zwWs=
