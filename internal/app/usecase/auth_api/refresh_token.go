@@ -7,6 +7,7 @@ import (
 	"context"
 	"errors"
 	"github.com/golang-jwt/jwt/v5"
+	"strconv"
 	"time"
 )
 
@@ -47,20 +48,16 @@ func (u *authUseCase) RefreshAccessToken(ctx context.Context, req RefreshAccessT
 		}
 	}
 
-	if accessClaims.Phone != refreshClaims.Phone {
+	if accessClaims.UserId != refreshClaims.UserId {
 		return &RefreshAccessTokenResponse{}, localerrors.NewInternalErr(appErrors.InvalidToken)
 	}
 
-	if accessClaims.IsEmployee != refreshClaims.IsEmployee {
-		return &RefreshAccessTokenResponse{}, localerrors.NewInternalErr(appErrors.InvalidToken)
-	}
-
-	token, err := GenerateAccessToken(accessClaims.Phone, accessClaims.IsEmployee)
+	token, err := GenerateAccessToken(accessClaims.UserId)
 	if err != nil {
 		return nil, localerrors.NewInternalErr(err)
 	}
 
-	cacheKey := "refresh_token" + accessClaims.Phone
+	cacheKey := "refresh_token" + strconv.FormatInt(accessClaims.UserId, 10)
 	_, err = u.cache.Get(ctx, cacheKey)
 	if err != nil {
 		return &RefreshAccessTokenResponse{}, localerrors.NewInternalErr(appErrors.TokenNotFound)
@@ -70,7 +67,7 @@ func (u *authUseCase) RefreshAccessToken(ctx context.Context, req RefreshAccessT
 		return nil, localerrors.NewInternalErr(err)
 	}
 
-	refreshToken, err := GenerateRefreshToken(refreshClaims.Phone, refreshClaims.IsEmployee)
+	refreshToken, err := GenerateRefreshToken(refreshClaims.UserId)
 	if err != nil {
 		return nil, localerrors.NewInternalErr(err)
 	}

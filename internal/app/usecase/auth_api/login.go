@@ -6,6 +6,7 @@ import (
 	"context"
 	"errors"
 	"golang.org/x/crypto/bcrypt"
+	"strconv"
 	"time"
 )
 
@@ -35,13 +36,13 @@ func (u *authUseCase) Login(ctx context.Context, req LoginRequest,
 		return nil, localerrors.NewBadRequestErr(errors.New(constants.PasswordsMismatch))
 	}
 
-	token, err := GenerateAccessToken(user.Phone, user.IsEmployee)
+	token, err := GenerateAccessToken(user.UserId)
 	if err != nil {
 		return nil, localerrors.NewInternalErr(err)
 	}
 
-	cacheKey := "refresh_token:" + req.Phone
-	refreshToken, err := GenerateRefreshToken(user.Phone, user.IsEmployee)
+	cacheKey := "refresh_token:" + strconv.FormatInt(user.UserId, 10)
+	refreshToken, err := GenerateRefreshToken(user.UserId)
 	if err != nil {
 		return nil, localerrors.NewInternalErr(err)
 	}

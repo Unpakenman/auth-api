@@ -8,11 +8,12 @@ import (
 	"fmt"
 	"github.com/golang-jwt/jwt/v5"
 	"os"
+	"strings"
 	"time"
 )
 
 type User struct {
-	UserId     int
+	UserId     int64
 	Phone      string
 	Email      string
 	Password   string
@@ -21,6 +22,7 @@ type User struct {
 }
 
 func (u *authUseCase) searchUser(ctx context.Context, phone string) (*User, error) {
+	phone = strings.NewReplacer(" ", "", "-", "", "+", "").Replace(phone)
 	user, err := u.db.CheckUserExist(ctx, nil, db.CheckUserExistRequest{
 		Phone: phone,
 	})
@@ -38,13 +40,12 @@ func (u *authUseCase) searchUser(ctx context.Context, phone string) (*User, erro
 	}, nil
 }
 
-func GenerateAccessToken(phone string, isEmployee bool) (string, error) {
+func GenerateAccessToken(userId int64) (string, error) {
 	var jwtSecret = []byte(os.Getenv(constants.PathToAccessSignature))
 	claims := jwt.MapClaims{
-		"phone":       phone,
-		"is_employee": isEmployee,
-		"exp":         time.Now().Add(15 * time.Minute).Unix(),
-		"iat":         time.Now().Unix(),
+		"user_id": userId,
+		"exp":     time.Now().Add(15 * time.Minute).Unix(),
+		"iat":     time.Now().Unix(),
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
@@ -52,13 +53,12 @@ func GenerateAccessToken(phone string, isEmployee bool) (string, error) {
 	return token.SignedString(jwtSecret)
 }
 
-func GenerateRefreshToken(phone string, isEmployee bool) (string, error) {
+func GenerateRefreshToken(userId int64) (string, error) {
 	var jwtSecret = []byte(os.Getenv(constants.PathToRefreshTokenSignature))
 	claims := jwt.MapClaims{
-		"phone":       phone,
-		"is_employee": isEmployee,
-		"exp":         time.Now().Add(7 * 24 * time.Hour).Unix(),
-		"iat":         time.Now().Unix(),
+		"user_id": userId,
+		"exp":     time.Now().Add(7 * 24 * time.Hour).Unix(),
+		"iat":     time.Now().Unix(),
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
@@ -67,8 +67,7 @@ func GenerateRefreshToken(phone string, isEmployee bool) (string, error) {
 }
 
 type TokenClaims struct {
-	Phone      string `json:"phone"`
-	IsEmployee bool   `json:"is_employee"`
+	UserId int64 `json:"user_id"`
 	jwt.RegisteredClaims
 }
 

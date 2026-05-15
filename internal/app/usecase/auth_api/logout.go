@@ -7,6 +7,7 @@ import (
 	"context"
 	"errors"
 	"github.com/golang-jwt/jwt/v5"
+	"strconv"
 )
 
 type LogoutRequest struct {
@@ -40,15 +41,11 @@ func (u authUseCase) Logout(ctx context.Context, req LogoutRequest,
 		}
 	}
 
-	if accessClaims.Phone != refreshClaims.Phone {
+	if accessClaims.UserId != refreshClaims.UserId {
 		return localerrors.NewInternalErr(appErrors.InvalidToken)
 	}
 
-	if accessClaims.IsEmployee != refreshClaims.IsEmployee {
-		return localerrors.NewInternalErr(appErrors.InvalidToken)
-	}
-
-	cacheKey := "refresh_token" + accessClaims.Phone
+	cacheKey := "refresh_token" + strconv.FormatInt(accessClaims.UserId, 10)
 	if err := u.cache.Delete(ctx, cacheKey); err != nil {
 		return localerrors.NewInternalErr(err)
 	}

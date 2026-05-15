@@ -8,6 +8,7 @@ import (
 	"context"
 	"errors"
 	"golang.org/x/crypto/bcrypt"
+	"strings"
 )
 
 type Register struct {
@@ -18,8 +19,9 @@ type Register struct {
 }
 
 func (u *authUseCase) Register(ctx context.Context, req Register) localerrors.Error {
+	phone := strings.NewReplacer(" ", "", "-", "", "+", "").Replace(req.Phone)
 	checkUserExist, err := u.db.CheckUserExist(ctx, nil, db.CheckUserExistRequest{
-		Phone: req.Phone,
+		Phone: phone,
 	})
 	if err != nil {
 		return localerrors.NewInternalErr(err)
@@ -36,7 +38,7 @@ func (u *authUseCase) Register(ctx context.Context, req Register) localerrors.Er
 		role := "client"
 		if req.IsEmployee == true {
 			employeeRole, err := u.db.GetUserRoleByPhone(ctx, tx, db.GetUserRoleRequest{
-				Phone: req.Phone,
+				Phone: phone,
 			})
 			if err != nil {
 				return err
@@ -50,7 +52,7 @@ func (u *authUseCase) Register(ctx context.Context, req Register) localerrors.Er
 		}
 
 		if err := u.db.CreateUser(ctx, tx, db.CreateUserRequest{
-			Phone:      req.Phone,
+			Phone:      phone,
 			Email:      req.Email,
 			Password:   string(hashedPassword),
 			IsEmployee: req.IsEmployee,
